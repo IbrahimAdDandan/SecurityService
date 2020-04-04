@@ -3,6 +3,7 @@ package com.myframework.sbase.sys.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -35,6 +36,15 @@ public class User extends BaseModel{
 
     public User(String username, String password, String email, boolean isEnabled, List<Role> roles) {
         super();
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.isEnabled = isEnabled;
+        this.roles = roles;
+    }
+
+    public User(Long id, Date createdDate, boolean isDeleted, String username, String password, String email, boolean isEnabled, List<Role> roles) {
+        super(id, createdDate, isDeleted);
         this.username = username;
         this.password = password;
         this.email = email;

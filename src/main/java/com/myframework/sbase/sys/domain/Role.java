@@ -3,6 +3,7 @@ package com.myframework.sbase.sys.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -36,6 +37,13 @@ public class Role extends BaseModel {
 
     public Role(String roleName, List<Privilege> privileges, List<User> users) {
         super();
+        this.roleName = roleName;
+        this.privileges = privileges;
+        this.users = users;
+    }
+
+    public Role(Long id, Date createdDate, boolean isDeleted, String roleName, List<Privilege> privileges, List<User> users) {
+        super(id, createdDate, isDeleted);
         this.roleName = roleName;
         this.privileges = privileges;
         this.users = users;

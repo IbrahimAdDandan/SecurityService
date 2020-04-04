@@ -20,6 +20,15 @@ public class BaseModel {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
+    public BaseModel() {
+    }
+
+    public BaseModel(Long id, Date createdDate, boolean isDeleted) {
+        this.id = id;
+        this.createdDate = createdDate;
+        this.isDeleted = isDeleted;
+    }
+
     public Long getId() {
         return id;
     }
