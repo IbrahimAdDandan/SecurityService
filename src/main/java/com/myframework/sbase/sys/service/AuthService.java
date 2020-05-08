@@ -1,5 +1,6 @@
 package com.myframework.sbase.sys.service;
 
+import com.myframework.sbase.sys.repository.RoleRepository;
 import com.myframework.sbase.sys.repository.UserRepository;
 import com.myframework.sbase.sys.domain.Privilege;
 import com.myframework.sbase.sys.domain.Role;
@@ -23,26 +24,22 @@ public class AuthService implements UserDetailsService {
     UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        if (user == null) {
-//            return new org.springframework.security.core.userdetails.User(
-//                    " ", "{noop} ", true, true, true, true,
-//                    getAuthorities(Arrays.asList(
-//                            roleRepository.findByRoleName("ROLE_USER"))));
+        if(user == null) {
             throw new UsernameNotFoundException("user not found");
         }
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), user.isEnabled(), true, true,
-                true, getAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true,this.getAuthorities(user));
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
-
-        return getGrantedAuthorities(getPrivileges(roles));
+    public Collection<? extends GrantedAuthority> getAuthorities(User user) {
+        Collection<GrantedAuthority> authorities = new HashSet<>();
+        Collection<String> privileges = this.getPrivileges(user.getRoles());
+        for (String privilege : privileges) {
+            authorities.add(new SimpleGrantedAuthority(privilege));
+        }
+//        authorities.add(new SimpleGrantedAuthority(this.user.getRoles()));
+        return authorities;
     }
 
     private List<String> getPrivileges(Collection<Role> roles) {
@@ -58,12 +55,26 @@ public class AuthService implements UserDetailsService {
         return privileges;
     }
 
-    private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String privilege : privileges) {
-            authorities.add(new SimpleGrantedAuthority(privilege));
-        }
-        return authorities;
+    public List<User> getUsers() { return (List<User>) userRepository.findAll();}
+
+    public User get() {
+        return new User();
+    }
+
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public User getAuthByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public void remove(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public User add(User user) {
+        return userRepository.save(user);
     }
 
 }

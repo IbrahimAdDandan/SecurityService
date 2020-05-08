@@ -6,6 +6,7 @@ import com.myframework.sbase.sys.domain.Privilege;
 import com.myframework.sbase.sys.helper.AuthorityHelper;
 import com.myframework.sbase.sys.service.GenericService;
 import com.myframework.sbase.sys.service.PrivilegeService;
+import com.myframework.sbase.sys.service.UserDetailsImp;
 import com.myframework.sbase.sys.type.OperationType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseController< T extends BaseModel, S extends GenericService> {
+public class BaseController< T extends BaseModel, S extends GenericService> {
 
     S genericService;
 
@@ -49,8 +50,10 @@ public abstract class BaseController< T extends BaseModel, S extends GenericServ
 
     @GetMapping("")
     public ResponseEntity<?> getAll(Authentication authentication) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        return new ResponseEntity<>(authentication, HttpStatus.OK);
+//        UserDetails authentication = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!AuthorityHelper.hasAuthority(authentication.getAuthorities(), this.getClass().getSimpleName(), OperationType.GET))
+//            return new ResponseEntity<>(authentication, HttpStatus.OK);
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         try {
             return new ResponseEntity<>(genericService.getAll(), HttpStatus.OK);

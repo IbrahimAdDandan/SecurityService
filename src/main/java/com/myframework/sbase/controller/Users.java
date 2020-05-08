@@ -1,8 +1,14 @@
 package com.myframework.sbase.controller;
 
+import com.myframework.sbase.sys.domain.User;
+import com.myframework.sbase.sys.helper.AuthorityHelper;
 import com.myframework.sbase.sys.service.AuthService;
 import com.myframework.sbase.sys.service.PrivilegeService;
+import com.myframework.sbase.sys.type.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,28 +24,28 @@ public class Users {
 
 //    @GetMapping("")
 //    public ResponseEntity<?> getAll(Authentication authentication) {
-//        if (!AuthorityHelper.hasAuthority((UserDetails) authentication.getPrincipal(), this.getClass().getSimpleName(), OperationType.GET))
+//        if (!AuthorityHelper.hasAuthority(authentication.getAuthorities(), this.getClass().getSimpleName(), OperationType.GET))
 //            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 //        return new ResponseEntity<>(authService.getUsers(), HttpStatus.OK);
 //    }
-//
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<?> getUserById(@PathVariable("id") Long userId, Authentication authentication) {
-//        if (!AuthorityHelper.hasAuthority((UserDetails) authentication.getPrincipal(), this.getClass().getSimpleName(), OperationType.GET))
+//        if (!AuthorityHelper.hasAuthority(authentication.getAuthorities(), this.getClass().getSimpleName(), OperationType.GET))
 //            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 //        return new ResponseEntity<>(authService.getUserById(userId), HttpStatus.OK);
 //    }
-//
+
 //    @PutMapping("")
 //    public ResponseEntity<?> updateUser(@RequestBody User user, Authentication authentication) {
-//        if (!AuthorityHelper.hasAuthority((UserDetails) authentication.getPrincipal(), this.getClass().getSimpleName(), OperationType.UPDATE))
+//        if (!AuthorityHelper.hasAuthority(authentication.getAuthorities(), this.getClass().getSimpleName(), OperationType.UPDATE))
 //            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 //        return new ResponseEntity<>(authService.add(user), HttpStatus.OK);
 //    }
-//
+
 //    @PutMapping("/change-password")
 //    public ResponseEntity<?> updatePassword(@RequestBody String password, Authentication authentication) {
-//        AuthDetailsImp user = (AuthDetailsImp)authentication.getPrincipal();
+//        User user = (User)authentication.getPrincipal();
 //        Long userId = user.getId();
 //        User user1 = authService.getUserById(userId).get();
 //        user1.setPassword("{noop}"+password);
@@ -49,7 +55,7 @@ public class Users {
 //
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> deleteUser(@PathVariable("id") Long userId, Authentication authentication) {
-//        if (!AuthorityHelper.hasAuthority((UserDetails) authentication.getPrincipal(), this.getClass().getSimpleName(), OperationType.DELETE))
+//        if (!AuthorityHelper.hasAuthority(authentication.getAuthorities(), this.getClass().getSimpleName(), OperationType.DELETE))
 //            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 //        authService.remove(userId);
 //        return new ResponseEntity<>(HttpStatus.OK);
@@ -57,7 +63,7 @@ public class Users {
 //
 //    @PostMapping("")
 //    public ResponseEntity<?> addUser(@RequestBody User user, Authentication authentication) {
-//        if (!AuthorityHelper.hasAuthority((UserDetails) authentication.getPrincipal(), this.getClass().getSimpleName(), OperationType.ADD))
+//        if (!AuthorityHelper.hasAuthority(authentication.getAuthorities(), this.getClass().getSimpleName(), OperationType.ADD))
 //            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 //        return new ResponseEntity<>(authService.add(user), HttpStatus.OK);
 //    }

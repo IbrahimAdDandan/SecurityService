@@ -1,4 +1,4 @@
-package com.myframework.sbase.sys.config;
+package com.myframework.sbase.config;
 
 import com.myframework.sbase.sys.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = {"com.myframework.sbase"})
+//@ComponentScan(basePackages = {"com.myframework.sbase"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -35,6 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+//                .csrf()
+//                .disable()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
